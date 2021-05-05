@@ -1,0 +1,69 @@
+{
+    "BIDSModelVersion": "1.0.0",
+    "Name": "SPM_RepetitionPriming",
+    "Description": "face repetition priming",
+    "Input": {
+        "Include": {
+            "task": "RepetitionPriming"
+        }
+    },
+    "Nodes": [
+        {
+            "Level": "subject",
+            "Model": {
+                "X": [
+                    "nonfamous",
+                    "famous",
+                    "trans_x",
+                    "trans_y",
+                    "trans_z",
+                    "rot_x",
+                    "rot_y",
+                    "rot_z"
+                ],
+                "ModelType": "glm",
+                "Options": {
+                    "high_pass_filter_cutoff_secs": 128
+                },
+                "Software": {
+                    "SPM": {
+                        "HRF_type": "canonical",
+                        "whitening": "AR(1)"
+                    }
+                }
+            },
+            "Contrasts": [
+                {
+                    "Name": "MainEffectCanonical",
+                    "ConditionList": [
+                        "nonfamous_bf1",
+                        "famous_bf1"
+                    ],
+                    "Weights": [0.5, 0.5],
+                    "Type": "t"
+                }
+            ]
+        },
+        {
+            "Level": "dataset",
+            "Model": {
+                "X": [
+                    "MainEffectCanonical"
+                ],
+                "ModelType": "glm"
+            },
+            "Contrasts": [
+                {
+                    "Name": "Faces vs Baseline: Canonical HRF",
+                    "ConditionList": [
+                        "MainEffectCanonical"
+                    ],
+                    "Weights": [
+                        1
+                    ],
+                    "Type": "t"
+                }
+            ]
+        }      
+    ]
+}

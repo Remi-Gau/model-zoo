@@ -1,0 +1,144 @@
+{
+    "BIDSModelVersion": "1.0.0",
+    "Name": "SPM_RepetitionPriming",
+    "Description": "face repetition priming",
+    "Input": {
+        "Include": {
+            "task": "RepetitionPriming"
+        }
+    },
+    "Nodes": [
+        {
+            "Level": "subject",
+            "Model": {
+                "X": [
+                    "nonfamous",
+                    "famous",
+                    "trans_x",
+                    "trans_y",
+                    "trans_z",
+                    "rot_x",
+                    "rot_y",
+                    "rot_z"
+                ],
+                "ModelType": "glm",
+                "Options": {
+                    "high_pass_filter_cutoff_secs": 128
+                },
+                "Software": {
+                    "SPM": {
+                        "HRF_type": "informed_basis_set",
+                        "whitening": "AR(1)"
+                    }
+                }
+            },
+            "Contrasts": [
+                {
+                    "Name": "MainEffectCanonical",
+                    "ConditionList": [
+                        "nonfamous_bf1",
+                        "famous_bf1"
+                    ],
+                    "Weights": [
+                        0.5,
+                        0.5
+                    ],
+                    "Type": "t"
+                },
+                {
+                    "Name": "MainEffectTimeDer",
+                    "ConditionList": [
+                        "nonfamous_bf2",
+                        "famous_bf2"
+                    ],
+                    "Weights": [
+                        0.5,
+                        0.5
+                    ],
+                    "Type": "t"
+                },
+                {
+                    "Name": "MainEffectDispDer",
+                    "ConditionList": [
+                        "nonfamous_bf3",
+                        "famous_bf3"
+                    ],
+                    "Weights": [
+                        0.5,
+                        0.5
+                    ],
+                    "Type": "t"
+                }
+            ]
+        },
+        {
+            "Level": "dataset",
+            "Model": {
+                "X": [
+                    "MainEffectCanonical",
+                    "MainEffectTimeDer",
+                    "MainEffectDispDer"
+                ],
+                "ModelType": "glm"
+            },
+            "Contrasts": [
+                {
+                    "Name": "Faces vs Baseline: Informed",
+                    "ConditionList": [
+                        "MainEffectCanonical",
+                        "MainEffectTimeDer",
+                        "MainEffectDispDer"
+                    ],
+                    "Weights": [
+                        [
+                            1,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            1,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            1
+                        ]
+                    ],
+                    "Type": "F"
+                },
+                {
+                    "Name": "Informed: t canonical contrast",
+                    "ConditionList": [
+                        "MainEffectCanonical"
+                    ],
+                    "Weights": [
+                        1
+                    ],
+                    "Type": "t"
+                },
+                {
+                    "Name": "Ftemp",
+                    "ConditionList": [
+                        "MainEffectTimeDer"
+                    ],
+                    "Weights": [
+                        1
+                    ],
+                    "Type": "F"
+                },
+                {
+                    "Name": "Fdisp",
+                    "ConditionList": [
+                        "MainEffectDispDer"
+                    ],
+                    "Weights": [
+                        1
+                    ],
+                    "Type": "F"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,86 @@
+{
+    "BIDSModelVersion": "1.0.0",
+    "Name": "SPM_RepetitionPriming",
+    "Description": "face repetition priming",
+    "Input": {
+        "Include": {
+            "task": "RepetitionPriming"
+        }
+    },
+    "Nodes": [
+        {
+            "Level": "subject",
+            "Model": {
+                "X": [
+                    "nonfamous",
+                    "famous",
+                    "trans_x",
+                    "trans_y",
+                    "trans_z",
+                    "rot_x",
+                    "rot_y",
+                    "rot_z"
+                ],
+                "ModelType": "glm",
+                "Options": {
+                    "high_pass_filter_cutoff_secs": 128
+                },
+                "Software": {
+                    "SPM": {
+                        "HRF_type": "FIR",
+                        "whitening": "AR(1)"
+                    }
+                }
+            },
+            "Contrasts": [
+                {
+                    "Name": "MainEffectBin1",
+                    "ConditionList": [
+                        "nonfamous_bf1",
+                        "famous_bf1"
+                    ],
+                    "Weights": [0.5, 0.5],
+                    "Type": "t"
+                },
+                {
+                    "Name": "MainEffectBin2",
+                    "ConditionList": [
+                        "nonfamous_bf2",
+                        "famous_bf2"
+                    ],
+                    "Weights": [0.5, 0.5],
+                    "Type": "t"
+                },
+                {
+                    "Name": "MainEffectBin3",
+                    "ConditionList": [
+                        "nonfamous_bf3",
+                        "famous_bf3"
+                    ],
+                    "Weights": [0.5, 0.5],
+                    "Type": "t"
+                },
+                {
+                    "Name": "MainEffectBin4",
+                    "ConditionList": [
+                        "nonfamous_bf4",
+                        "famous_bf4"
+                    ],
+                    "Weights": [0.5, 0.5],
+                    "Type": "t"
+                }                
+            ]
+        },
+        {
+            "Level": "dataset",
+            "Model": {
+                "X": [
+                    "MainEffectBin1",
+                    "MainEffectBin2",
+                    "MainEffectBin3"
+                ],
+                "ModelType": "glm"
+            }
+        }   
+    ]
+}
